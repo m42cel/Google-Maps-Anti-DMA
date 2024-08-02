@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Maps Anti-DMA
 // @namespace    http://tampermonkey.net/
-// @version      2024-08-02
+// @version      1.0.0
 // @description  Make Google Maps preview clickable again
 // @author       m42cel
 // @source       https://github.com/m42cel/Google-Maps-Anti-DMA
@@ -9,6 +9,8 @@
 // @match        https://www.google.de/search*
 // @icon         https://www.google.com/images/branding/product/ico/maps_32dp.ico
 // @icon64       https://www.google.com/images/branding/product/ico/maps_64dp.ico
+// @updateURL    https://github.com/m42cel/Google-Maps-Anti-DMA/raw/master/Google%20Maps%20Anti-DMA.user.js
+// @downloadURL  https://github.com/m42cel/Google-Maps-Anti-DMA/raw/master/Google%20Maps%20Anti-DMA.user.js
 // @grant        none
 // ==/UserScript==
 (function () {
