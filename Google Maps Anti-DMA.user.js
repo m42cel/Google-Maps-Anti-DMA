@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Maps Anti-DMA
 // @namespace    http://tampermonkey.net/
-// @version      2024-06-01
+// @version      2024-08-02
 // @description  Make Google Maps preview clickable again
 // @author       m42cel
 // @source       https://github.com/m42cel/Google-Maps-Anti-DMA
@@ -16,11 +16,11 @@
 
     function findMapsPreview() {
         // First try to find the image by id "lu_map"
-        let imgElement = document.querySelector('g-img[id="lu_map"]')
+        let imgElement = document.querySelector('g-img[id="lu_map"]');
 
         if (imgElement) {
             console.debug('Found Google Maps preview image by id:', imgElement);
-            return imgElement
+            return imgElement;
         }
 
         // If not found by id try to find by element pattern
@@ -33,12 +33,12 @@
 
             if (imgElement) {
                 console.debug('Found Google Maps preview image by element pattern:', imgElement);
-                return imgElement
+                return imgElement;
             }
         }
 
         console.debug('Google Maps preview image not found');
-        return null
+        return null;
     }
 
     function getGoogleMapsLink() {
