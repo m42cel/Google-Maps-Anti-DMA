@@ -16,7 +16,7 @@
 
     function findMapsPreview() {
         // First try to find the image by id "lu_map"
-        let imgElement = document.querySelector('img[id="lu_map"]')
+        let imgElement = document.querySelector('g-img[id="lu_map"]')
 
         if (imgElement) {
             console.debug('Found Google Maps preview image by id:', imgElement);
