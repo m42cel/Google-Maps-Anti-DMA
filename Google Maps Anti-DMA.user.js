@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Maps Anti-DMA
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.1.0
 // @description  Make Google Maps preview clickable again
 // @author       m42cel
 // @source       https://github.com/m42cel/Google-Maps-Anti-DMA
@@ -17,25 +17,24 @@
     'use strict';
 
     function findMapsPreview() {
-        // First try to find the image by id "lu_map"
-        let imgElement = document.querySelector('g-img[id="lu_map"]');
-
-        if (imgElement) {
-            console.debug('Found Google Maps preview image by id:', imgElement);
-            return imgElement;
-        }
-
-        // If not found by id try to find by element pattern
         // Select all parent divs with a jsname attribute
         const parentDivs = document.querySelectorAll('div[jsname]');
 
-        for (const parentDiv of parentDivs) {
-            // Find the img element within the parent div that matches the conditions
-            imgElement = parentDiv.querySelector('img[id^="dimg_"][src^="data:image/png;base64"][data-csiid][data-atf="1"]');
+        const searchPatterns = [
+            'g-img[id="lu_map"]',
+            'img[src^="/maps/vt/data"]',
+            'img[id^="dimg_"][src^="data:image/png;base64"][data-csiid][data-atf="1"]',
+        ];
 
-            if (imgElement) {
-                console.debug('Found Google Maps preview image by element pattern:', imgElement);
-                return imgElement;
+        for (const parentDiv of parentDivs) {
+            // Find the img element within the parent div that matches the pattern
+            for (const pattern of searchPatterns) {
+                let imgElement = parentDiv.querySelector(pattern);
+
+                if (imgElement) {
+                    console.debug('Found Google Maps preview image by element pattern:', imgElement);
+                    return imgElement;
+                }
             }
         }
 
@@ -61,13 +60,32 @@
         anchor.appendChild(imgElement);
     }
 
+    let tries = 0;
+    function fixMapLink() {
+        tries++;
+
+        let mapsPreview = findMapsPreview();
+
+        if (mapsPreview) {
+            let mapsLink = getGoogleMapsLink();
+            addLinkToImage(mapsPreview, mapsLink);
+        }
+
+        // If the method is scheduled (timerId is defined) and we found the preview or reached the max tries stop the schedule
+        if (timerId && (mapsPreview || tries >= MAX_TRIES)) {
+            clearInterval(timerId);
+        }
+
+        return mapsPreview != null;
+    }
 
     // --- Main --- ///
-    var mapsPreview = findMapsPreview();
+    const MAX_TRIES = 5;
 
-    if (mapsPreview) {
-        var mapsLink = getGoogleMapsLink();
-        addLinkToImage(mapsPreview, mapsLink);
+    let found = fixMapLink();
+
+    if (!found) {
+        var timerId = setInterval(fixMapLink, 500);
     }
 
 })();
