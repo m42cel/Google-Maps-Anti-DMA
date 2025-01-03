@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Maps Anti-DMA
 // @namespace    http://tampermonkey.net/
-// @version      1.1.0
+// @version      1.2.0
 // @description  Make Google Maps preview clickable again
 // @author       m42cel
 // @source       https://github.com/m42cel/Google-Maps-Anti-DMA
@@ -17,24 +17,20 @@
     'use strict';
 
     function findMapsPreview() {
-        // Select all parent divs with a jsname attribute
-        const parentDivs = document.querySelectorAll('div[jsname]');
-
         const searchPatterns = [
             'g-img[id="lu_map"]',
             'img[src^="/maps/vt/data"]',
+            'img[src^="//www.google.com/maps/vt/data"]',
             'img[id^="dimg_"][src^="data:image/png;base64"][data-csiid][data-atf="1"]',
         ];
 
-        for (const parentDiv of parentDivs) {
-            // Find the img element within the parent div that matches the pattern
-            for (const pattern of searchPatterns) {
-                let imgElement = parentDiv.querySelector(pattern);
+        // Find the img element within the parent div that matches the pattern
+        for (const pattern of searchPatterns) {
+            let imgElement = document.querySelector(pattern);
 
-                if (imgElement) {
-                    console.debug('Found Google Maps preview image by element pattern:', imgElement);
-                    return imgElement;
-                }
+            if (imgElement) {
+                console.debug('Found Google Maps preview image by element pattern:', imgElement);
+                return imgElement;
             }
         }
 
