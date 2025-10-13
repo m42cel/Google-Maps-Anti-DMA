@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Maps Anti-DMA
 // @namespace    http://tampermonkey.net/
-// @version      1.2.0
+// @version      1.2.1
 // @description  Make Google Maps preview clickable again
 // @author       m42cel
 // @source       https://github.com/m42cel/Google-Maps-Anti-DMA
@@ -18,6 +18,7 @@
 
     function findMapsPreview() {
         const searchPatterns = [
+            'div[id="lu_map"]',
             'g-img[id="lu_map"]',
             'img[src^="/maps/vt/data"]',
             'img[src^="//www.google.com/maps/vt/data"]',
